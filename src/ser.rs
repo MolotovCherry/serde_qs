@@ -266,7 +266,11 @@ impl<'a, W: 'a + Write> QsSerializer<'a, W> {
             .map(replace_space)
             .collect::<String>();
         let key = if let Some(ref key) = self.key {
-            format!("{}[{}]", key, newkey)
+            if newkey.parse::<u64>().is_ok() {
+                format!("{}", key)
+            } else {
+                format!("{}[{}]", key, newkey)
+            }
         } else {
             newkey
         };
